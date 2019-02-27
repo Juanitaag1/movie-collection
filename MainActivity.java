@@ -19,6 +19,8 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import edu.cascadia.mobile.apps.movies.ViewModel.MainViewModel;
 import edu.cascadia.mobile.apps.movies.database.MovieDao;
 import edu.cascadia.mobile.apps.movies.database.movieDatabase;
@@ -28,11 +30,16 @@ import edu.cascadia.mobile.apps.movies.utilities.SampleData;
 
 public class MainActivity extends AppCompatActivity {
  //have to initiaize the recycleview before viewmode
-    RecyclerView mRecyclerView;
+   // RecyclerView mRecyclerView;
     MoviesAdapter mMoviesAdapter;
     private movieDatabase mDatabase;
     private MainViewModel mMainViewModel;
     private List<MovieEntity> moviesData = new ArrayList<>();
+
+    //butterknife annotations to define view references
+    //to bind at runtime, add  line ButterKnife.bind(this); in onCreate
+    @BindView(R.id.recycler_view)
+    RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +47,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        mRecyclerView = findViewById(R.id.recycler_view);
+
+        //to bind the nRecycleview at runtime
+        ButterKnife.bind(this);
+        //don not need the next line because butterknife binding gets rid of the need
+     //   mRecyclerView = findViewById(R.id.recycler_view);
 
 //gets the data from the viewmodel
       //  moviesData.addAll(mMainViewModel.mMovies);
