@@ -18,6 +18,7 @@ public class MovieEntity  {
     @ColumnInfo(name = "director_id")
     private String director;
 
+    //since room only uses constructor that takes all of the parameters
     @Ignore
     public MovieEntity() {
     }

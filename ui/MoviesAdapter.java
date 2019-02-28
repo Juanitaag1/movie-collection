@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import edu.cascadia.mobile.apps.movies.R;
 import edu.cascadia.mobile.apps.movies.model.MovieEntity;
 
@@ -23,6 +25,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
         this.mMovies = mMovies;
         this.mContext = mContext;
     }
+
 
     @NonNull
     @Override
@@ -43,7 +46,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
 
         return new ViewHolder(view);
     }
-
+//called each time a row is refreshed with the data object
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final MovieEntity movie = mMovies.get(position);
@@ -57,13 +60,19 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
         return mMovies.size();
     }
 
+    //purpose of viewHolder is to manage the view itself
+    //it has to contain references to any compontents that you want to display data
+    //uses Butterknife to bind view references
     public class ViewHolder extends RecyclerView.ViewHolder {
-
+       @BindView(R.id.movie_text)
         TextView mTextView;
 
         public ViewHolder(View itemView){
             super(itemView);
-            mTextView = itemView.findViewById(R.id.movie_text);
+            //binds the reference mTextView
+            ButterKnife.bind(this, itemView);
+            //using Butterknife gets rid of useing findbyid
+           // mTextView = itemView.findViewById(R.id.movie_text);
         }
     }
 }

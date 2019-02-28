@@ -17,6 +17,8 @@ public interface MovieDao {
     //Create (and Update)
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void addOrUpdate(MovieEntity movie);
+
+    //can also use an array to add a list of movies
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void addAll(List<MovieEntity> movies);
 
@@ -27,11 +29,11 @@ public interface MovieDao {
     void removeAll(List<MovieEntity> movies);
 
     //Read
-    @Query("select * from movie where id = :id")
+    @Query("select * from movie where id = :id")//id here and in param must match Room does matching
     MovieEntity getMovie(int id);
     @Query("select * from movie order by title asc")
     //List<MovieEntity> getMovies();
-    //change to
+    //change to to return a livedata object
     LiveData<List<MovieEntity>> getAll();
 
     //Count

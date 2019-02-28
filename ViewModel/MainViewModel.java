@@ -24,8 +24,15 @@ public class MainViewModel extends AndroidViewModel {
 
     public MainViewModel(@NonNull Application application) {
         super(application);
-        mAppRepository = AppRepository.getInstance(application.getApplicationContext());
+        mAppRepository = AppRepository.getInstance(application.getApplicationContext());//the constuctor now takes a context
         //now get the mMovies from the repository
         mMovies = mAppRepository.mMovies;
+    }
+
+    //makes a call to the reopsitory to addSampleData
+    //will be called in the MainActivity for the optionsmenu for add_sample_data
+    //need to implement method in AppRepository
+    public void addSampleData() {
+        mAppRepository.addSampleData();
     }
 }

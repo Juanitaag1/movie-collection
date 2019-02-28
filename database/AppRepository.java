@@ -7,16 +7,27 @@ import android.arch.lifecycle.LiveData;
 import android.content.Context;
 
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import edu.cascadia.mobile.apps.movies.model.MovieEntity;
 import edu.cascadia.mobile.apps.movies.utilities.SampleData;
 
 public class AppRepository {
     private static AppRepository ourInstance;
+    //get an Executor because all room datab operations must be executed on a background thread
+    //use only one Executor
+    Executor executor = Executors.newSingleThreadExecutor();
+    //instance of database through Room library
+    //inorder to get this reference need a context and pass it to roomlibrary
+    //so changed the original way the instance was instantiated and made the getInstancefx that takes a context
+    //was private static final AppRepository ourInstance= new AppRepository();
+    //public static AppRepository getInstance(){ return ourInstance;}
+    //also changed the private constructor to take a context
+    //have to change in Viewmodel to add a context in the AppRepository constuctor
 
-    //instance of database
     private movieDatabase mDb;
-    //for now get the ifo from sampledata
+    //for now get the info from sampledata
     public LiveData<List<MovieEntity>> mMovies;
 
 
@@ -27,11 +38,12 @@ public class AppRepository {
         return ourInstance;
     }
 
-
+//constructor to get the infor and initialize the database and MovieEntity that is wrapped in LiveData
     private AppRepository(Context context) {
-        //create the reference first
+        //create the database reference first
         mDb = movieDatabase.getInstance(context);
         mMovies = getAllMovies();
+        //was mMovies.SampleData.getMovies(); to get the movies from the sampleData class
     }
 
     //Returns LiveData object
@@ -41,5 +53,21 @@ public class AppRepository {
     //room does background threading automatically
     private LiveData<List<MovieEntity>> getAllMovies(){
         return mDb.movieDao().getAll();
+    }
+
+    //will be called in the MainViewModel's addSampleData and the MainViewModel's addSampleData
+    //will be called in the MainActivity's addSampleData's fx to add sampledata whent the addsample data
+    //option is chosen in the options menu
+//inserts data
+    //need to run db operations in background thread so use Executor object
+    public void addSampleData() {
+     //get a reference to the db through room library mDb
+     executor.execute(new Runnable() {
+         @Override
+         public void run() {
+      mDb.movieDao().addAll(SampleData.getMovies());
+         }
+     });
+
     }
 }
