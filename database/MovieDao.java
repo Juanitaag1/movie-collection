@@ -25,8 +25,14 @@ public interface MovieDao {
     //Delete
     @Delete
     void remove(MovieEntity movie);
+
     @Delete
-    void removeAll(List<MovieEntity> movies);
+   void removeAll(List<MovieEntity> movies);
+
+    
+    @Query("DELETE FROM movie")
+    int deleteAll();
+
 
     //Read
     @Query("select * from movie where id = :id")//id here and in param must match Room does matching

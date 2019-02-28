@@ -40,7 +40,7 @@ public class AppRepository {
 
 //constructor to get the infor and initialize the database and MovieEntity that is wrapped in LiveData
     private AppRepository(Context context) {
-        //create the database reference first
+        //create the database reference first then use it to get the data
         mDb = movieDatabase.getInstance(context);
         mMovies = getAllMovies();
         //was mMovies.SampleData.getMovies(); to get the movies from the sampleData class
@@ -69,5 +69,19 @@ public class AppRepository {
          }
      });
 
+    }
+
+    //deletes all notes
+    //method in Dao deleteAll that returns an integer
+    //Rule_ whenever a query inside a Dao returns a LiveData Object-the room library will handle the
+    //background threading for you, but if returning anything else you need to handle the background
+    //threading explicitly so need Executor object
+    public void deleteAllMovies() {
+       executor.execute(new Runnable() {
+           @Override
+           public void run() {
+              mDb.movieDao().deleteAll();
+           }
+       });
     }
 }

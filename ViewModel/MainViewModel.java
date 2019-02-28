@@ -35,4 +35,10 @@ public class MainViewModel extends AndroidViewModel {
     public void addSampleData() {
         mAppRepository.addSampleData();
     }
+
+    //part of chain of calls to delete moview
+    //will be called in mainAct
+    public void deleteAllMovies(){
+        mAppRepository.deleteAllMovies();
+    }
 }

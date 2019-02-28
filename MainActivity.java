@@ -99,10 +99,11 @@ public class MainActivity extends AppCompatActivity {
              //recieve the movie data
              @Override
              public void onChanged(@Nullable List<MovieEntity> movieEntities) {
+                 //empty data
                  moviesData.clear();
                  moviesData.addAll(movieEntities);
                  if(mMoviesAdapter == null) {
-                     mMoviesAdapter = new MoviesAdapter(moviesData, MainActivity.this);
+                     mMoviesAdapter = new MoviesAdapter(moviesData, MainActivity.this);//MainActivity.this because now in anotherobject
                      mRecyclerView.setAdapter(mMoviesAdapter);
                  }
                  else{
@@ -144,9 +145,18 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_add_sample_data) {
             addSampleData();
             return true;
+        }else if(id == R.id.action_delete_all){
+            deleteAllMovies();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    //now need to create a chain of calls to delete the data
+    private void deleteAllMovies() {
+        mMainViewModel.deleteAllMovies();
     }
 
 
